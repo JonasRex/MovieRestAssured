@@ -1,0 +1,11 @@
+POST https://rexdanorum.dk/devops-starter/api/movie
+Content-Type: application/json
+
+{
+  "year": "2020",
+  "title": "Twenty Twenty",
+  "actors": [
+    "Boddy",
+    "Olsen"
+  ]
+}
