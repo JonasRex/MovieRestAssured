@@ -5,10 +5,14 @@
  */
 package facades;
 
-import dtos.RenameMeDTO;
-import entities.RenameMe;
+import dtos.MovieDTO;
+import entities.Movie;
+
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,10 +21,26 @@ import utils.EMF_Creator;
 public class Populator {
     public static void populate(){
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
-        FacadeExample fe = FacadeExample.getFacadeExample(emf);
-        fe.create(new RenameMeDTO(new RenameMe("First 1", "Last 1")));
-        fe.create(new RenameMeDTO(new RenameMe("First 2", "Last 2")));
-        fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
+        MovieFacade fe = MovieFacade.getMovieFacade(emf);
+
+
+        List<String> actors1 = new ArrayList<>();
+        actors1.add("Peter Nielsen");
+        actors1.add("Allan Hansen");
+
+        List<String> actors2 = new ArrayList<>();
+        actors2.add("Connie Olsen");
+        actors2.add("Dennis Knudsen");
+
+        List<String> actors3 = new ArrayList<>();
+        actors2.add("Sanne Knudsen");
+        actors2.add("Britta Nielsen");
+
+
+
+        fe.create(new MovieDTO(new Movie(2000, "Movie A", actors1)));
+        fe.create(new MovieDTO(new Movie(2010, "Movie B", actors2)));
+        fe.create(new MovieDTO(new Movie(2008, "Movie C", actors3)));
     }
     
     public static void main(String[] args) {

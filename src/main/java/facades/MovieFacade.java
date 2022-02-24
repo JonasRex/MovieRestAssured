@@ -1,7 +1,9 @@
 package facades;
 
-import dtos.RenameMeDTO;
-import entities.RenameMe;
+import dtos.MovieDTO;
+import entities.Movie;
+
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,13 +16,13 @@ import utils.EMF_Creator;
  *
  * Rename Class to a relevant name Add add relevant facade methods
  */
-public class FacadeExample {
+public class MovieFacade {
 
-    private static FacadeExample instance;
+    private static MovieFacade instance;
     private static EntityManagerFactory emf;
     
     //Private Constructor to ensure Singleton
-    private FacadeExample() {}
+    private MovieFacade() {}
     
     
     /**
@@ -28,10 +30,10 @@ public class FacadeExample {
      * @param _emf
      * @return an instance of this facade class.
      */
-    public static FacadeExample getFacadeExample(EntityManagerFactory _emf) {
+    public static MovieFacade getMovieFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
-            instance = new FacadeExample();
+            instance = new MovieFacade();
         }
         return instance;
     }
@@ -40,47 +42,49 @@ public class FacadeExample {
         return emf.createEntityManager();
     }
     
-    public RenameMeDTO create(RenameMeDTO rm){
-        RenameMe rme = new RenameMe(rm.getDummyStr1(), rm.getDummyStr2());
+    public MovieDTO create(MovieDTO movieDTO){
+
+
+        Movie movie = new Movie(movieDTO.getYear(), movieDTO.getTitle(), movieDTO.getActors());
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(rme);
+            em.persist(movie);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
-        return new RenameMeDTO(rme);
+        return new MovieDTO(movie);
     }
-    public RenameMeDTO getById(long id) { //throws RenameMeNotFoundException {
+    public MovieDTO getById(long id) { //throws RenameMeNotFoundException {
         EntityManager em = emf.createEntityManager();
-        RenameMe rm = em.find(RenameMe.class, id);
+        Movie movie = em.find(Movie.class, id);
 //        if (rm == null)
 //            throw new RenameMeNotFoundException("The RenameMe entity with ID: "+id+" Was not found");
-        return new RenameMeDTO(rm);
+        return new MovieDTO(movie);
     }
     
     //TODO Remove/Change this before use
-    public long getRenameMeCount(){
+    public long getMovieCount(){
         EntityManager em = getEntityManager();
         try{
-            long renameMeCount = (long)em.createQuery("SELECT COUNT(r) FROM RenameMe r").getSingleResult();
-            return renameMeCount;
+            long movieCount = (long)em.createQuery("SELECT COUNT(m) FROM Movie m").getSingleResult();
+            return movieCount;
         }finally{  
             em.close();
         }
     }
     
-    public List<RenameMeDTO> getAll(){
+    public List<MovieDTO> getAll(){
         EntityManager em = emf.createEntityManager();
-        TypedQuery<RenameMe> query = em.createQuery("SELECT r FROM RenameMe r", RenameMe.class);
-        List<RenameMe> rms = query.getResultList();
-        return RenameMeDTO.getDtos(rms);
+        TypedQuery<Movie> query = em.createQuery("SELECT m FROM Movie m", Movie.class);
+        List<Movie> rms = query.getResultList();
+        return MovieDTO.getDtos(rms);
     }
     
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
-        FacadeExample fe = getFacadeExample(emf);
+        MovieFacade fe = getMovieFacade(emf);
         fe.getAll().forEach(dto->System.out.println(dto));
     }
 
