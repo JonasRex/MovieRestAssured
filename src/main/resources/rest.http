@@ -2,10 +2,10 @@ POST https://rexdanorum.dk/MovieApp/api/movie
 Content-Type: application/json
 
 {
-  "year": "2020",
-  "title": "Twenty Twenty",
+  "year": "1999",
+  "title": "Matrix",
   "actors": [
-    "Boddy",
-    "Olsen"
+    "Keanu Reeves",
+    "Laurence Fishburne"
   ]
 }

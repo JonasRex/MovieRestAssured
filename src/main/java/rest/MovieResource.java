@@ -9,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 //Todo Remove or change relevant parts before ACTUAL use
 @Path("movie")
@@ -44,6 +45,17 @@ public class MovieResource {
 
         return Response.ok("SUCCESS")
                 .entity(GSON.toJson(FACADE.addMovie(addMovieDTO)))
+                .build();
+    }
+
+    @GET
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllMovies() {
+        List<MovieDTO> mList = FACADE.getAllMovies();
+        return Response
+                .ok()
+                .entity(GSON.toJson(mList))
                 .build();
     }
 
